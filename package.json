@@ -1,0 +1,19 @@
+{
+  "name": "wc-customer-related-order",
+  "version": "1.0.0",
+  "slug": "wc-customer-related-order",
+  "description": "Helps to show related customer order in WooCommerce order details page.",
+  "author": "Sabbir Ahmed",
+  "license": "GPL",
+  "private": true,
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-clean": "^1.0.0",
+    "grunt-contrib-compress": "^1.4.1",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-less": "^1.4.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-wp-i18n": "^1.0.0"
+  }
+}
