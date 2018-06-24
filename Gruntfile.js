@@ -22,7 +22,7 @@ module.exports = function(grunt) {
                     sourceMapRootpath: '../../'
                 },
                 files: {
-                    '<%= dirs.css %>/style.css': '<%= dirs.less %>/style.less'
+                    '<%= dirs.css %>/wccro-admin.css': '<%= dirs.less %>/style.less'
                 }
             }
         },

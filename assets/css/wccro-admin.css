@@ -1,0 +1,7 @@
+table.wc-related-order-table {
+  border: none;
+}
+table.wc-related-order-table tbody tr td {
+  padding: 7px;
+  line-height: 30px;
+}
