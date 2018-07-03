@@ -5,7 +5,7 @@ Plugin URI: http://wptarzan.com/
 Description: Helps to show related customer order in WooCommerce order details page.
 Version: 1.0.0
 Author: Sabbir Ahmed
-Author URI: http://wptarzan.com/
+Author URI: https://github.com/sabbir1991
 License: GPL2
 */
 
@@ -232,22 +232,30 @@ class WC_Customer_Related_Order {
                 </tr>
             </thead>
             <tbody>
-            <?php foreach ( $customer_orders as $order_id ): ?>
-                <?php
-                    $other_order = wc_get_order( $order_id );
-                ?>
+            <?php if ( $customer_orders ): ?>
+                <?php foreach ( $customer_orders as $order_id ): ?>
+                    <?php
+                        $other_order = wc_get_order( $order_id );
+                    ?>
+                    <tr>
+                        <td>
+                            <a href="<?php echo $other_order->get_edit_order_url(); ?>">
+                                <?php echo _x( '#', 'hash before order number', 'wc-customer-related-order' ) . $other_order->get_order_number(); ?>
+                            </a>
+                        </td>
+                        <td><?php echo $other_order->get_formatted_order_total(); ?></td>
+                        <td><?php echo wc_get_order_status_name( $other_order->get_status() ); ?></td>
+                        <td><?php echo $other_order->get_payment_method_title(); ?></td>
+                        <td><a href="#" class="button wc-action-button order-preview" data-order-id="<?php echo $other_order->get_id(); ?>"><?php _e( 'View Items', 'wc-customer-related-order' ) ?></a></td>
+                    </tr>
+                <?php endforeach ?>
+            <?php else: ?>
+
                 <tr>
-                    <td>
-                        <a href="<?php echo $other_order->get_edit_order_url(); ?>">
-                            <?php echo _x( '#', 'hash before order number', 'wc-customer-related-order' ) . $other_order->get_order_number(); ?>
-                        </a>
-                    </td>
-                    <td><?php echo $other_order->get_formatted_order_total(); ?></td>
-                    <td><?php echo wc_get_order_status_name( $other_order->get_status() ); ?></td>
-                    <td><?php echo $other_order->get_payment_method_title(); ?></td>
-                    <td><a href="#" class="button wc-action-button order-preview" data-order-id="<?php echo $other_order->get_id(); ?>"><?php _e( 'View Items', 'wc-customer-related-order' ) ?></a></td>
+                    <td colspan="4"><?php _e( 'No orders found', 'wc-customer-related-order' ); ?></td>
                 </tr>
-            <?php endforeach ?>
+
+            <?php endif ?>
             </tbody>
         </table>
         <?php
@@ -270,9 +278,9 @@ class WC_Customer_Related_Order {
                             <header class="wc-backbone-modal-header">
                                 <mark class="order-status status-{{ data.status }}"><span>{{ data.status_name }}</span></mark>
                                 <?php /* translators: %s: order ID */ ?>
-                                <h1><?php echo esc_html( sprintf( __( 'Order #%s', 'woocommerce' ), '{{ data.order_number }}' ) ); ?></h1>
+                                <h1><?php echo esc_html( sprintf( __( 'Order #%s', 'wc-customer-related-order' ), '{{ data.order_number }}' ) ); ?></h1>
                                 <button class="modal-close modal-close-link dashicons dashicons-no-alt">
-                                    <span class="screen-reader-text"><?php esc_html_e( 'Close modal panel', 'woocommerce' ); ?></span>
+                                    <span class="screen-reader-text"><?php esc_html_e( 'Close modal panel', 'wc-customer-related-order' ); ?></span>
                                 </button>
                             </header>
                             <article>
@@ -281,24 +289,24 @@ class WC_Customer_Related_Order {
                                 <div class="wc-order-preview-addresses">
                                     <div class="wc-order-preview-address">
                                         <# if ( data.data.billing.email ) { #>
-                                            <strong><?php esc_html_e( 'Email', 'woocommerce' ); ?></strong>
+                                            <strong><?php esc_html_e( 'Email', 'wc-customer-related-order' ); ?></strong>
                                             <a href="mailto:{{ data.data.billing.email }}">{{ data.data.billing.email }}</a>
                                         <# } #>
 
                                         <# if ( data.data.billing.phone ) { #>
-                                            <strong><?php esc_html_e( 'Phone', 'woocommerce' ); ?></strong>
+                                            <strong><?php esc_html_e( 'Phone', 'wc-customer-related-order' ); ?></strong>
                                             <a href="tel:{{ data.data.billing.phone }}">{{ data.data.billing.phone }}</a>
                                         <# } #>
 
                                         <# if ( data.payment_via ) { #>
-                                            <strong><?php esc_html_e( 'Payment via', 'woocommerce' ); ?></strong>
+                                            <strong><?php esc_html_e( 'Payment via', 'wc-customer-related-order' ); ?></strong>
                                             {{{ data.payment_via }}}
                                         <# } #>
                                     </div>
                                     <# if ( data.needs_shipping ) { #>
                                         <div class="wc-order-preview-address">
                                             <# if ( data.shipping_via ) { #>
-                                                <strong><?php esc_html_e( 'Shipping method', 'woocommerce' ); ?></strong>
+                                                <strong><?php esc_html_e( 'Shipping method', 'wc-customer-related-order' ); ?></strong>
                                                 {{ data.shipping_via }}
                                             <# } #>
                                         </div>
@@ -306,7 +314,7 @@ class WC_Customer_Related_Order {
 
                                     <# if ( data.data.customer_note ) { #>
                                         <div class="wc-order-preview-note">
-                                            <strong><?php esc_html_e( 'Note', 'woocommerce' ); ?></strong>
+                                            <strong><?php esc_html_e( 'Note', 'wc-customer-related-order' ); ?></strong>
                                             {{ data.data.customer_note }}
                                         </div>
                                     <# } #>
@@ -320,7 +328,7 @@ class WC_Customer_Related_Order {
                                 <div class="inner">
                                     {{{ data.actions_html }}}
 
-                                    <a class="button button-primary button-large" aria-label="<?php esc_attr_e( 'Edit this order', 'woocommerce' ); ?>" href="<?php echo esc_url( admin_url( 'post.php?action=edit' ) ); ?>&post={{ data.data.id }}"><?php esc_html_e( 'Edit', 'woocommerce' ); ?></a>
+                                    <a class="button button-primary button-large" aria-label="<?php esc_attr_e( 'Edit this order', 'wc-customer-related-order' ); ?>" href="<?php echo esc_url( admin_url( 'post.php?action=edit' ) ); ?>&post={{ data.data.id }}"><?php esc_html_e( 'Edit', 'wc-customer-related-order' ); ?></a>
                                 </div>
                             </footer>
                         </section>
