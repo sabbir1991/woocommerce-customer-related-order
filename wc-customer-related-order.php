@@ -209,17 +209,23 @@ class WC_Customer_Related_Order {
     public function wc_customer_related_order_cb() {
         global $post;
         $order = wc_get_order( $post->ID );
+        
+        $customer_id = $order->get_customer_id();
 
-        $customer_orders = get_posts( array(
-            'numberposts' => -1,
-            'meta_key'    => '_customer_user',
-            'meta_value'  => $order->get_customer_id(),
-            'post_type'   => wc_get_order_types( 'view-orders' ),
-            'post_status' => array_keys( wc_get_order_statuses() ),
-            'post_parent' => 0,
-            'fields'      => 'ids',
-            'exclude'     => array( $post->ID )
-        ) );
+        if ( $customer_id > 0 ) {
+            $customer_orders = get_posts( array(
+                'numberposts' => -1,
+                'meta_key'    => '_customer_user',
+                'meta_value'  => $order->get_customer_id(),
+                'post_type'   => wc_get_order_types( 'view-orders' ),
+                'post_status' => array_keys( wc_get_order_statuses() ),
+                'post_parent' => 0,
+                'fields'      => 'ids',
+                'exclude'     => array( $post->ID )
+            ) );
+        } else {
+            $customer_orders = array();
+        }
         ?>
         <table class="widefat fixed wc-related-order-table">
             <thead>
